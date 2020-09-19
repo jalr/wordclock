@@ -6,6 +6,7 @@
 #include <TimeLib.h>
 
 #include "PersistentStorage.h"
+#include "Rtc.h"
 
 static WiFiUDP Udp;
 
@@ -58,6 +59,8 @@ static time_t getNtpTime()
 
         time_t result = secsSince1900 - 2208988800UL;
         Serial.println("NTP Timestamp: " + String(result));
+        rtc.set(result);
+        rtc.hctosys();
         return result;
       }
     }

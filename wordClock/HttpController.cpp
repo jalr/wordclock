@@ -4,6 +4,7 @@
 #include "HttpController.h"
 #include "HttpContent.h"
 #include "PersistentStorage.h"
+#include "Rtc.h"
 
 extern PersistentStorage persistentStorage;
 
@@ -136,7 +137,9 @@ static void handleDate() {
     if (server.hasArg("timestamp")) {
       time_t timestamp = server.arg("timestamp").toInt();
       if (timestamp > 0) {
+        rtc.set(timestamp);
         setTime(timestamp);
+        rtc.hctosys();
       }
       server.send(200, "text/plain", "Changed date successfully");
     } else {

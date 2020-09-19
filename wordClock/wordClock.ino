@@ -4,6 +4,7 @@
 #  include <ESP8266mDNS.h>
 #endif
 
+#include "Rtc.h"
 #include "DisplayDriver10x11Clock.h"
 #include "DisplayDriverFablabNeaClock.h"
 #include "DisplayDriverFrickelClock.h"
@@ -116,6 +117,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println("wordClock reset, setting up ...");
 #endif
+
+  rtc.setup();
 
   persistentStorage.setup();
 
