@@ -43,11 +43,11 @@ WordingStrategyWest strategy = { &wordFactory };
 DisplayDriverFablabNeaClock driver;
 WordFactorySchwabenClock wordFactory;
 WordingStrategySchwaben strategy = { &wordFactory };
-#elif 1
+#elif 0
 DisplayDriverFablabNeaClock driver;
 WordFactoryGermanV2Clock wordFactory;
 WordingStrategyFranken strategy = { &wordFactory };
-#elif 0
+#elif 1
 DisplayDriverFablabNeaClock driver;
 WordFactoryFrankenClock wordFactory;
 WordingStrategyFranken strategy = { &wordFactory };
