@@ -104,7 +104,7 @@ static void handleRoot() {
 
     content += form_submit();
     content += F("</form>");
-  } else {
+  } else if (server.method() == HTTP_POST) {
     readCharParam(persistentStorage.wifi.ssid, wifissid);
     readCharParam(persistentStorage.wifi.password, wifipassword);
     readIntParam(persistentStorage.red, red);
@@ -119,6 +119,9 @@ static void handleRoot() {
     Serial.println("updated mqtt domain to: " + String(persistentStorage.mqtt.domain));
     persistentStorage.commit();
     ESP.reset();
+  } else {
+    server.send(405, "text/plain", "405 Method Not Allowed");
+    return;
   }
 
   content += FPSTR(WEB_PAGE_FOOTER);
@@ -209,7 +212,13 @@ static void handleNotFound(){
   message += "URI: ";
   message += server.uri();
   message += "\nMethod: ";
-  message += (server.method() == HTTP_GET) ? "GET" : "POST";
+  if (server.method() == HTTP_GET) {
+    message += "GET";
+  } else if (server.method() == HTTP_POST) {
+    message += "POST";
+  } else {
+    message += "unknown";
+  }
   message += "\nArguments: ";
   message += server.args();
   message += "\n";
