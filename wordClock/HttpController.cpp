@@ -1,3 +1,5 @@
+#include <Time.h>
+
 #include "DiyHueController.h"
 #include "HttpController.h"
 #include "HttpContent.h"
@@ -81,6 +83,7 @@ static void handleRoot() {
   content.replace("{title}", F("WordClock Configuration"));
 
   if (server.method() == HTTP_GET) {
+    content += F("<script>let r=new XMLHttpRequest();r.open('POST','/date',true);r.setRequestHeader('Content-type','application/x-www-form-urlencoded');r.send('timestamp='+parseInt(new Date().getTime()/1000));</script>");
     content += F("<form method='POST'>");
 
     content += F("<h4>Wifi Settings</h4>");
@@ -126,6 +129,23 @@ static void handleRoot() {
 
   content += FPSTR(WEB_PAGE_FOOTER);
   server.send(200, "text/html", content);
+}
+
+static void handleDate() {
+  if (server.method() == HTTP_POST) {
+    if (server.hasArg("timestamp")) {
+      time_t timestamp = server.arg("timestamp").toInt();
+      if (timestamp > 0) {
+        setTime(timestamp);
+      }
+      server.send(200, "text/plain", "Changed date successfully");
+    } else {
+      server.send(400, "text/plain", "400 Bad Request");
+    }
+  } else {
+    server.send(405, "text/plain", "405 Method Not Allowed");
+    return;
+  }
 }
 
 static void handleDiyHueSet() {
@@ -235,6 +255,7 @@ void HttpController::setup() {
   server.on("/set", handleDiyHueSet);
   server.on("/get", handleDiyHueGet);
   server.on("/detect", handleDiyHueDetect);
+  server.on("/date", handleDate);
 
   server.onNotFound(handleNotFound);
   server.begin();
