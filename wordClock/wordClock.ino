@@ -81,12 +81,13 @@ MqttController *mqttController = new MqttController(&diyHueController, wifiClien
 
 static void setupWifiAP() {
   IPAddress apIP(192, 168, 4, 1);
+  IPAddress apGateway(0, 0, 0, 0);
   IPAddress netMsk(255, 255, 255, 0);
 
   char ssid[32];
   sprintf(ssid, "wordclock-%06x", ESP.getChipId());
 
-  WiFi.softAPConfig(apIP, apIP, netMsk);
+  WiFi.softAPConfig(apIP, apGateway, netMsk);
   WiFi.softAP(ssid);
 }
 
