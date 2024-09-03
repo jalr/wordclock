@@ -1,7 +1,7 @@
 #ifndef WORD_CLOCK_SCENE_H
 #define WORD_CLOCK_SCENE_H
 
-#include <Time.h>
+#include <TimeLib.h>
 #include <Timezone.h>  // https://github.com/JChristensen/Timezone
 #include "IAnimator.h"
 #include "IWordingStrategy.h"
